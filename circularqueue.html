@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Circular Queue Demo</title>
+    <link rel="stylesheet" href="stack.css" media="screen" title="no title" charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <header class="purple lighten-2 white-text">
+      <h3>Circular  Queue</h3>
+      <a class='dropdown-button btn teal' href='#' data-activates='dropdown1'><i class="material-icons left">menu</i> Menu</a>
+
+  <!-- Dropdown Structure -->
+      <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="index.html">Halaman Utama</a></li>
+        <li><a href="stack.html">Stack</a></li>
+        <li><a href="queue.html">Queue</a></li>
+        <li><a href="circularqueue.html">Circular Queue</a></li>
+      </ul>
+    </header>
+    <div class="container white z-depth-1 paddingable">
+      <div class="row">
+        <div class="col m2 red space space-1">
+
+        </div>
+        <div class="col m2 orange space space-2">
+
+        </div>
+        <div class="col m2 yellow space space-3">
+
+        </div>
+        <div class="col m2 green space space-4">
+
+        </div>
+        <div class="col m2 blue space space-5">
+
+        </div>
+        <div class="col m2 purple space space-6">
+
+        </div>
+      </div>
+
+      <button class="blue waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i>Clear</button>
+      <button class="blue waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i>Peak</button>
+      <button class="blue waves-effect waves-light btn" id="enqueue" type="button"><i class="material-icons left">file_download</i>enQueue</button>
+      <button class="blue waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
+    </div>
+    <p>
+      Made with HTML, CSS, jQuery, Materializecss &copy; Bintang Muhammad & Anasikhatussalafi
+      <br>
+      2015
+    </p>
+    <script src="jquery-1.11.3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript">
+     var head = 1;
+     var rear = 1;
+     var i = 1;
+      $('#enqueue').click(function() {
+        $('.space-'+rear).html('<h3>'+i+'</h3>');
+        rear++;
+        if (rear == 7) {
+          rear = 1;
+        }
+      });
+
+      $('#dequeue').click(function() {
+        $('.space-'+head).html('');
+        head++;
+        if (head == 7) {
+          head = 1;
+        }
+      });
+
+      $('#peek').click(function() {
+
+      });
+
+      $('#dequeue').click(function() {
+        $('#isi').html($('.space-'+head).text());
+
+      });
+
+
+
+    </script>
+  </body>
+</html>

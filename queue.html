@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Queue Demo</title>
+    <link rel="stylesheet" href="stack.css" media="screen" title="no title" charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <header class="teal white-text">
+      <h3>Queue</h3>
+      <a class='dropdown-button btn' href='#' data-activates='dropdown1'><i class="material-icons left">menu</i> Menu</a>
+
+  <!-- Dropdown Structure -->
+      <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="index.html">Halaman Utama</a></li>
+        <li><a href="stack.html">Stack</a></li>
+        <li><a href="queue.html">Queue</a></li>
+        <li><a href="circularqueue.html">Circular Queue</a></li>
+      </ul>
+    </header>
+    <div class="container white z-depth-1 paddingable">
+      <div class="row">
+        <div class="col m2 red space space-1">
+
+        </div>
+        <div class="col m2 orange space space-2">
+
+        </div>
+        <div class="col m2 yellow space space-3">
+
+        </div>
+        <div class="col m2 green space space-4">
+
+        </div>
+        <div class="col m2 blue space space-5">
+
+        </div>
+        <div class="col m2 purple space space-6">
+
+        </div>
+      </div>
+      <div class="row">
+        <form id="inputnilai" action="index.html" method="post">
+          <div class="col m6 input-field" style="text-align:left">
+            <label for="nilai">Nilai yang dimasukan</label>
+            <input type="text" id="nilai" name="name" required value="">
+            <button class="waves-effect waves-light btn" id="enqueue" type="submit"><i class="material-icons left">file_download</i>enQueue</button><br>
+
+          </div>
+        </form>
+        <div class="col m6" style="text-align: left">
+          <strong>Informasi</strong>
+          <h3 id="isi"></h3>
+          <button class="waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
+          <button class="waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i>Peek</button>
+          <button class="waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i>Clear</button>
+        </div>
+      </div>
+    </div>
+    <p>
+      Made with HTML, CSS, jQuery, Materializecss &copy; Bintang Muhammad & Anasikhatussalafi
+      <br>
+      2015
+    </p>
+    <script src="jquery-1.11.3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript">
+      var i = 1;
+      var max = 6;
+      $('#inputnilai').submit(function(e) {
+        e.preventDefault();
+      });
+       $('#enqueue').click(function() {
+         if (i <= 6) {
+           if ($('#nilai').val() != "") {
+             $('.space-'+i).html('<h3>'+$('#nilai').val()+'</h3>');
+             i++;
+           } else {
+             Materialize.toast('Masukann nilai', 1000, 'red');
+           }
+
+         } else {
+           Materialize.toast('Queue sudah penuh');
+         }
+       });
+
+       $('#clear').click(function() {
+         $('.space').html('');
+         Materialize.toast('Antrian sudah kosongkan', 2000, 'red');
+         i = 0;
+       });
+
+       $('#peek').click(function() {
+         $('#isi').html($('.space-1').text());
+       });
+
+       $('#dequeue').click(function() {
+         $('#isi').html($('.space-1').text());
+         if (i >= 1) {
+           for (var k = 1; k <= 6; k++) {
+             $('.space-'+k).html('<h3>'+$('.space-'+(k+1)).text()+'</h3>');
+           }
+           i--;
+         }
+       });
+    </script>
+  </body>
+</html>
