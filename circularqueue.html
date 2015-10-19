@@ -21,7 +21,7 @@
       </ul>
     </header>
     <div class="container white z-depth-1 paddingable">
-      <div class="row">
+      <div class="row cirque">
         <div class="col m2 red space space-1">
 
         </div>
@@ -41,11 +41,27 @@
 
         </div>
       </div>
+      <div class="row">
+        <div class="col m6 l6">
+          <form id="inputnilai" action="index.html" method="post">
+            <div class="col m6 input-field" style="text-align:left">
+              <label for="nilai">Nilai yang dimasukan</label>
+              <input type="text" id="nilai" name="name" required value="">
+              <button class="waves-effect waves-light btn" id="enqueue" type="submit"><i class="material-icons left">file_download</i>enQueue</button><br>
 
-      <button class="blue waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i>Clear</button>
-      <button class="blue waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i>Peak</button>
-      <button class="blue waves-effect waves-light btn" id="enqueue" type="button"><i class="material-icons left">file_download</i>enQueue</button>
-      <button class="blue waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
+            </div>
+          </form>
+        </div>
+        <div class="col m6 l6">
+          <strong>Aktivitas Terakhir:</strong> <br>
+          <h4 id="act"></h4>
+          <strong>Informasi:</strong> <br>
+          <h4 id="isi"></h4>
+          <button class="blue waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i>Clear</button>
+          <button class="blue waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i>Peak</button>
+          <button class="blue waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
+        </div>
+      </div>
     </div>
     <p>
       Made with HTML, CSS, jQuery, Materializecss &copy; Bintang Muhammad & Anasikhatussalafi
@@ -57,20 +73,51 @@
     <script type="text/javascript">
      var head = 1;
      var rear = 1;
+     var jumlah = 0;
+     var first = true;
+     function isFull() {
+       return (jumlah == 6);
+     }
      var i = 1;
-      $('#enqueue').click(function() {
-        $('.space-'+rear).html('<h3>'+i+'</h3>');
-        rear++;
-        if (rear == 7) {
-          rear = 1;
+      $('#inputnilai').submit(function(e) {
+        e.preventDefault();
+        if (isFull() == false) {
+          if ($('#nilai').val() != "") {
+            $('.space-'+rear).html('<h3>'+$('#nilai').val()+'</h3>');
+            $('.space').removeClass('rear');
+            $('.space-'+rear).addClass('rear');
+            if (first == true) {
+              $('.space-'+rear).addClass('head');
+              first =  false;
+            }
+            rear++;
+            jumlah++;
+
+            $('#nilai').val("");
+            if (rear == 7) {
+              rear = 1;
+            }
+          } else {
+              Materialize.toast("Untuk menandakan, nilai tak boleh kosong", 4000, 'orange')
+          }
+        } else {
+          Materialize.toast('Antrian sudah penuh', 4000, 'red');
         }
       });
 
       $('#dequeue').click(function() {
-        $('.space-'+head).html('');
-        head++;
-        if (head == 7) {
-          head = 1;
+        if (jumlah !=0) {
+          $('#isi').html($('.space-'+head).text());
+          $('.space-'+head).html('');
+          $('.space').removeClass('head');
+          jumlah--;
+          head++;
+          if (head == 7) {
+            head = 1;
+          }
+          $('.space-'+(head)).addClass('head');
+        } else {
+          Materialize.toast('Antrian sudah kosong', 4000, 'red');
         }
       });
 
@@ -78,9 +125,15 @@
 
       });
 
-      $('#dequeue').click(function() {
-        $('#isi').html($('.space-'+head).text());
-
+      $('#clear').click(function() {
+        $('.space').html('');
+        Materialize.toast('Antrian sudah kosongkan', 2000, 'red');
+        $('.space').removeClass('rear');
+        $('.space').removeClass('head');
+        head = 1;
+        rear = 1;
+        jumlah = 0;
+        first = true;
       });
 
 

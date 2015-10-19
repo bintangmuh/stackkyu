@@ -5,12 +5,12 @@
     <title>Queue Demo</title>
     <link rel="stylesheet" href="stack.css" media="screen" title="no title" charset="utf-8">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
   </head>
   <body>
     <header class="teal white-text">
       <h3>Queue</h3>
-      <a class='dropdown-button btn' href='#' data-activates='dropdown1'><i class="material-icons left">menu</i> Menu</a>
+      <a class='dropdown-button btn' href='#' data-activates='dropdown1'><i class="mdi mdi-menu left"></i> Menu</a>
 
   <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
@@ -51,6 +51,8 @@
           </div>
         </form>
         <div class="col m6" style="text-align: left">
+          <strong>Aktivitas:</strong>
+          <h5 id="action"></h5>
           <strong>Informasi</strong>
           <h3 id="isi"></h3>
           <button class="waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
@@ -71,38 +73,42 @@
       var max = 6;
       $('#inputnilai').submit(function(e) {
         e.preventDefault();
+        if (i <= 6) {
+          if ($('#nilai').val() != "") {
+            $('.space-'+i).html('<h3>'+$('#nilai').val()+'</h3>');
+            i++;
+            $('#nilai').val("");
+          } else {
+            Materialize.toast('Masukann nilai', 1000, 'red');
+          }
+        } else {
+          Materialize.toast('Queue sudah penuh', 4000, 'red');
+        }
       });
-       $('#enqueue').click(function() {
-         if (i <= 6) {
-           if ($('#nilai').val() != "") {
-             $('.space-'+i).html('<h3>'+$('#nilai').val()+'</h3>');
-             i++;
-           } else {
-             Materialize.toast('Masukann nilai', 1000, 'red');
-           }
-
-         } else {
-           Materialize.toast('Queue sudah penuh');
-         }
-       });
 
        $('#clear').click(function() {
+         $('#isi').html('');
+         $('#action').html('Clear');
          $('.space').html('');
          Materialize.toast('Antrian sudah kosongkan', 2000, 'red');
-         i = 0;
+         i = 1;
        });
 
        $('#peek').click(function() {
          $('#isi').html($('.space-1').text());
+         $('#action').html('Peek');
        });
 
        $('#dequeue').click(function() {
          $('#isi').html($('.space-1').text());
-         if (i >= 1) {
+         $('#action').html('Dequeue');
+         if (i > 1) {
            for (var k = 1; k <= 6; k++) {
              $('.space-'+k).html('<h3>'+$('.space-'+(k+1)).text()+'</h3>');
            }
            i--;
+         } else {
+           Materialize.toast('Antrian sudah kosong', 2000, 'red');
          }
        });
     </script>
