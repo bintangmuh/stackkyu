@@ -19,11 +19,15 @@ header h3 {
 .paddingable {
   padding: 10px;
 }
+.cirque .space {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 .container {
   position: relative;
 }
 .ember {
-  height: 300px;
+  height: 262px;
   width: 200px;
   border-top: none;
   border-left: 3px solid #000;
@@ -68,4 +72,36 @@ header h3 {
 .space {
   height: 200px;
   color: #fff;
+  position: relative;
+}
+.rear::before {
+  content: "";
+  position: absolute;
+  border-bottom: 30px solid #1498d9;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  bottom: -40px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  display: block;
+  width: 20px;
+  height: 20px;
+  /*background-color: rgb(255, 0, 0);*/
+}
+
+.head::after {
+  content: "";
+  position: absolute;
+  border-top: 30px solid #14d945;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  top: -40px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  display: block;
+  width: 20px;
+  height: 20px;
+  /*background-color: rgb(255, 0, 0);*/
 }

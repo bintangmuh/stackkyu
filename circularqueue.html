@@ -5,12 +5,12 @@
     <title>Circular Queue Demo</title>
     <link rel="stylesheet" href="stack.css" media="screen" title="no title" charset="utf-8">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
   </head>
   <body>
     <header class="purple lighten-2 white-text">
       <h3>Circular  Queue</h3>
-      <a class='dropdown-button btn teal' href='#' data-activates='dropdown1'><i class="material-icons left">menu</i> Menu</a>
+      <a class='dropdown-button btn teal' href='#' data-activates='dropdown1'><i class="mdi mdi-menu left"></i> Menu</a>
 
   <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
@@ -21,7 +21,7 @@
       </ul>
     </header>
     <div class="container white z-depth-1 paddingable">
-      <div class="row">
+      <div class="row cirque">
         <div class="col m2 red space space-1">
 
         </div>
@@ -41,11 +41,51 @@
 
         </div>
       </div>
-
-      <button class="blue waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i>Clear</button>
-      <button class="blue waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i>Peak</button>
-      <button class="blue waves-effect waves-light btn" id="enqueue" type="button"><i class="material-icons left">file_download</i>enQueue</button>
-      <button class="blue waves-effect waves-light btn" id="dequeue" type="button"><i class="material-icons left">file_upload</i>deQueue</button>
+      <div class="row">
+        <div class="col m6 l5"  style="text-align:left;">
+          <form id="inputnilai" action="index.html" method="post">
+            <div class="col m12 input-field" style="text-align:left;">
+              <label for="nilai">Nilai yang dimasukan</label>
+              <input type="text" id="nilai" name="name" required value="">
+            </div>
+            <div class="col m12 input-field" style="text-align:left;">
+            <button class="waves-effect waves-light btn" id="enqueue" type="submit"><i class="mdi mdi-download left"></i>enQueue</button><br>
+            </div>
+          </form>
+        </div>
+        <div class="col m6 l7" style="text-align: left">
+          <strong>Keterangan</strong><br>
+          <div class="col m12 l12" >
+            <table>
+              <tr>
+                <td style="text-align: center">
+                  <strong>Head</strong>
+                </td>
+                <td style="text-align: center">
+                  <strong>Rear/Tail</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center">
+                  <div style="margin: auto;  width: 20px; border-top: 30px solid #14d945; border-left: 30px solid transparent;         border-right: 30px solid transparent;"></div>
+                </td>
+                <td style="text-align: center">
+                  <div style="margin: auto; width: 20px; border-bottom: 30px solid #1498d9; border-left: 30px solid transparent; border-right: 30px solid transparent;"></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col m12 l12" style="text-align: left">
+            <strong>Aktivitas terakhir</strong>
+            <h5 id="aktiv"></h5>
+            <strong>Hasil:</strong>
+            <h5 id="isi"></h5>
+          </div>
+          <button class="blue waves-effect waves-light btn" id="clear" type="button"><i class="mdi mdi-refresh left"></i>Clear</button>
+          <button class="blue waves-effect waves-light btn" id="peek" type="button"><i class="mdi mdi-eye left"></i>Peak</button>
+          <button class="blue waves-effect waves-light btn" id="dequeue" type="button"><i class="mdi mdi-upload left"></i>deQueue</button>
+        </div>
+      </div>
     </div>
     <p>
       Made with HTML, CSS, jQuery, Materializecss &copy; Bintang Muhammad & Anasikhatussalafi
@@ -57,30 +97,75 @@
     <script type="text/javascript">
      var head = 1;
      var rear = 1;
+     var jumlah = 0;
+     var first = true;
+     function isFull() {
+       return (jumlah == 6);
+     }
      var i = 1;
-      $('#enqueue').click(function() {
-        $('.space-'+rear).html('<h3>'+i+'</h3>');
-        rear++;
-        if (rear == 7) {
-          rear = 1;
+      $('#inputnilai').submit(function(e) {
+        e.preventDefault();
+        if (isFull() == false) {
+          if ($('#nilai').val() != "") {
+            $('.space-'+rear).html('<h3>'+$('#nilai').val()+'</h3>');
+            $('.space').removeClass('rear');
+            $('.space-'+rear).addClass('rear');
+            if (first == true) {
+              $('.space-'+rear).addClass('head');
+              first =  false;
+            }
+            rear++;
+            jumlah++;
+
+            $('#nilai').val("");
+            if (rear == 7) {
+              rear = 1;
+            }
+          } else {
+              Materialize.toast("Untuk menandakan, nilai tak boleh kosong", 4000, 'orange')
+          }
+        } else {
+          Materialize.toast('Antrian sudah penuh', 4000, 'red');
         }
       });
 
       $('#dequeue').click(function() {
-        $('.space-'+head).html('');
-        head++;
-        if (head == 7) {
-          head = 1;
+        if (jumlah !=0) {
+          $('#aktiv').html('Dequeue');
+          $('#isi').html($('.space-'+head).text());
+          $('.space-'+head).html('');
+          $('.space').removeClass('head');
+          jumlah--;
+          head++;
+          if (head == 7) {
+            head = 1;
+          }
+          $('.space-'+(head)).addClass('head');
+        } else {
+          Materialize.toast('Antrian sudah kosong', 4000, 'red');
         }
       });
 
       $('#peek').click(function() {
-
+        if (jumlah !=0) {
+          $('#aktiv').html('Peek');
+          $('#isi').html($('.space-'+head).text());
+        } else {
+          Materialize.toast('Antrian kosong', 4000, 'red');
+        }
       });
 
-      $('#dequeue').click(function() {
-        $('#isi').html($('.space-'+head).text());
-
+      $('#clear').click(function() {
+        $('.space').html('');
+        $('#aktiv').html('Clear');
+        $('#isi').html("");
+        Materialize.toast('Antrian sudah kosongkan', 2000, 'red');
+        $('.space').removeClass('rear');
+        $('.space').removeClass('head');
+        head = 1;
+        rear = 1;
+        jumlah = 0;
+        first = true;
       });
 
 

@@ -5,14 +5,14 @@
     <title> Stack Demo</title>
     <link rel="stylesheet" href="stack.css" media="screen" title="no title" charset="utf-8">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
   </head>
   <body>
     <header class="blue white-text">
-      <h3><i class="material-icons medium">menu</i> Demo Stack</h3>
-      <a class='dropdown-button btn purple' href='#' data-activates='dropdown1'><i class="material-icons left">menu</i> Menu</a>
+      <h3>Stack</h3>
+      <a class='dropdown-button btn purple' href='#' data-activates='dropdown1'><i class="mdi mdi-menu left"></i> Menu</a>
 
-  <!-- Dropdown Structure -->
+      <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
         <li><a href="index.html">Halaman Utama</a></li>
         <li class="divider"></li>
@@ -30,24 +30,28 @@
             <div class="konten">
             </div>
           </div>
-          <div class="input-field">
-            <div class="row">
-              <div class="col m8 l8">
-                <label for="nilai">Masukan nilai yang akan di-push</label>
-                <input type="text" id="nilai" name="name" value="" class="validate">
-              </div>
-              <div class="col m4 l4">
-                <button class="waves-effect waves-light btn" id="push" type="button">Push</button>
+          <form class="inputnilai" action="index.html" method="post">
+            <div class="input-field">
+              <div class="row">
+                <div class="col m8 l8">
+                  <label for="nilai">Masukan nilai yang akan di-push</label>
+                  <input type="text" id="nilai" name="name" value="" class="validate">
+                </div>
+                <div class="col m4 l4">
+                  <button class="waves-effect waves-light btn" id="push" type="submit"><i class="mdi mdi-download"></i>Push</button>
+                </div>
               </div>
             </div>
-          </div>
-          <button class="waves-effect waves-light btn" id="clear" type="button"><i class="material-icons left">clear</i> Clear</button>
-          <button class="waves-effect waves-light btn" id="peek" type="button"><i class="material-icons left">visibility</i> Peak</button>
-          <button class="waves-effect waves-light btn" id="pop" type="button"><i class="material-icons left">file_upload</i> Pop</button>
+          </form>
+          <button class="waves-effect waves-light btn" id="peek" type="button"><i class="mdi mdi-eye left"></i> Peek</button>
+          <button class="waves-effect waves-light btn" id="pop" type="button"><i class="mdi mdi-upload left"></i> Pop</button>
+          <button class="waves-effect waves-light btn" id="clear" type="button"><i class="mdi mdi-refresh left"></i> Clear</button>
 
         </div>
-        <div class="col m4 l4">
-          <h4>Isi:</h4>
+        <div class="col m4 l4" style="text-align: left">
+          <strong>Aktivitas terakhir</strong>
+          <h5 id="aktiv"></h5>
+          <strong>Hasil:</strong>
           <h5 id="isi"></h5>
         </div>
       </div>
@@ -67,10 +71,22 @@
       $(document).ready(function() {
         var  i = 0;
         var max = 5;
-        $("button#push").click(function() {
-          $('.konten').prepend($('<div class="stack stack-'+i+' flow-text white-text">'+$('#nilai').val()+'</div>').fadeIn('slow'));
-          Materialize.toast('Berhasil melakukan push ke-'+(i+1), 4000, 'teal lighten-2');
-          i++;
+        $('.inputnilai').submit(function(e) {
+          e.preventDefault();
+          if ($('#nilai').val() != "") {
+            if (i < 5) {
+              $('.stack').removeClass('bordering');
+              $('.konten').prepend($('<div class="stack stack-'+i+' blue flow-text white-text">'+$('#nilai').val()+'</div>').fadeIn('slow'));
+              Materialize.toast('Berhasil melakukan push ke-'+(i+1), 4000, 'teal lighten-1');
+              $('#nilai').val("");
+              i++;
+            } else {
+              Materialize.toast('Stack sudah penuh', 4000, 'red');
+            }
+          } else {
+            Materialize.toast('Data tak boleh kosong', 4000, 'orange');
+          }
+
         });
 
         $("button#clear").click(function() {
@@ -81,6 +97,7 @@
 
         $("button#pop").click(function() {
           if (i != 0) {
+            $('#aktiv').html('Pop');
             Materialize.toast('Berhasil melakukan pengambilan data stack ke-'+i, 1000);
             var isian = $('.stack-'+(i-1)+'').text();
             $('#isi').html(isian);
@@ -92,6 +109,8 @@
         });
 
         $("button#peek").click(function() {
+          $('#aktiv').html('Peek');
+          $('.stack').removeClass('bordering');
           $('.stack-'+(i-1)+'').addClass('bordering');
           var isian = $('.stack-'+(i-1)+'').text();
           $('#isi').html(isian);
